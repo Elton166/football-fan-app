@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Football Fan App{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="{{ url_for('index') }}">⚽ Football Fan App</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('leagues') }}">Leagues</a></li>
+                <li><a href="{{ url_for('highlights') }}">Highlights</a></li>
+                <li><a href="{{ url_for('fantasy') }}">Fantasy</a></li>
+                <li><a href="{{ url_for('chat') }}">Chat</a></li>
+                {% if session.get('username') %}
+                    <li><span class="user-greeting">Hello, {{ session.get('username') }}!</span></li>
+                    <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}" class="btn-login">Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="btn-register">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Football Fan App. All rights reserved.</p>
+            <p>Data provided by <a href="https://www.football-data.org/" target="_blank">Football-Data.org</a></p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

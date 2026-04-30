@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Leagues - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Football Leagues Around the World</h1>
+        <p>Browse all available competitions and leagues</p>
+    </div>
+
+    <div class="leagues-container">
+        {% if competitions and competitions.competitions %}
+            <div class="league-list">
+                {% for competition in competitions.competitions %}
+                <div class="league-item">
+                    <div class="league-logo-container">
+                        {% if competition.emblem %}
+                        <img src="{{ competition.emblem }}" alt="{{ competition.name }} logo" class="league-logo">
+                        {% else %}
+                        <div class="league-logo-placeholder">⚽</div>
+                        {% endif %}
+                    </div>
+                    <div class="league-info">
+                        <h3>{{ competition.name }}</h3>
+                        <p class="league-area">{{ competition.area.name }}</p>
+                        <p class="league-type">{{ competition.type }}</p>
+                    </div>
+                    <div class="league-actions">
+                        <a href="{{ url_for('league_detail', league_code=competition.code) }}" class="btn btn-small">View Details</a>
+                        <a href="{{ url_for('chat_room', room=competition.code) }}" class="btn btn-small btn-secondary">Join Chat</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-data">
+                <p>⚠️ Unable to load leagues. Please check your API key configuration.</p>
+                <p>Get a free API key from <a href="https://www.football-data.org/" target="_blank">Football-Data.org</a></p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

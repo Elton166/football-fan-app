@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Highlights - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🎥 Football Highlights</h1>
+        <p>Watch the best moments from matches around the world</p>
+    </div>
+
+    <!-- Popular League Channels -->
+    <section class="highlights-section">
+        <h2>Official League Channels</h2>
+        <p class="section-subtitle">Subscribe to official channels for the latest highlights</p>
+        <div class="highlights-grid">
+            {% for highlight in popular %}
+            <div class="highlight-card">
+                <div class="highlight-thumbnail">
+                    <img src="{{ highlight.thumbnail_url }}" alt="{{ highlight.title }}">
+                    <div class="play-overlay">
+                        <span class="play-icon">▶</span>
+                    </div>
+                </div>
+                <div class="highlight-info">
+                    <h3>{{ highlight.title }}</h3>
+                    <p class="highlight-channel">{{ highlight.channel }}</p>
+                    <a href="{{ highlight.video_url }}" target="_blank" class="btn btn-primary">Visit Channel</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Recent Highlights -->
+    {% if recent %}
+    <section class="highlights-section">
+        <h2>Recent Match Highlights</h2>
+        <div class="highlights-grid">
+            {% for highlight in recent %}
+            <div class="highlight-card">
+                {% if highlight.thumbnail_url %}
+                <div class="highlight-thumbnail">
+                    <img src="{{ highlight.thumbnail_url }}" alt="{{ highlight.title }}">
+                    <div class="play-overlay">
+                        <span class="play-icon">▶</span>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="highlight-info">
+                    <h3>{{ highlight.title }}</h3>
+                    <a href="{{ highlight.video_url }}" target="_blank" class="btn btn-secondary">Watch Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- How to Find Highlights -->
+    <section class="info-section">
+        <h2>How to Find Match Highlights</h2>
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-icon">🔍</div>
+                <h3>Browse Matches</h3>
+                <p>Go to any league and click on a match to see available highlights</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">📺</div>
+                <h3>Official Channels</h3>
+                <p>Subscribe to official league YouTube channels for instant highlights</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">⚡</div>
+                <h3>Quick Access</h3>
+                <p>Highlights are automatically searched for each match you view</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Highlight Channels -->
+    <section class="channels-section">
+        <h2>Recommended Highlight Channels</h2>
+        <div class="channels-list">
+            <div class="channel-item">
+                <strong>Premier League</strong>
+                <a href="https://www.youtube.com/c/premierleague" target="_blank">youtube.com/c/premierleague</a>
+            </div>
+            <div class="channel-item">
+                <strong>UEFA Champions League</strong>
+                <a href="https://www.youtube.com/c/championsleague" target="_blank">youtube.com/c/championsleague</a>
+            </div>
+            <div class="channel-item">
+                <strong>LaLiga</strong>
+                <a href="https://www.youtube.com/c/laliga" target="_blank">youtube.com/c/laliga</a>
+            </div>
+            <div class="channel-item">
+                <strong>Serie A</strong>
+                <a href="https://www.youtube.com/c/seriea" target="_blank">youtube.com/c/seriea</a>
+            </div>
+            <div class="channel-item">
+                <strong>Bundesliga</strong>
+                <a href="https://www.youtube.com/c/bundesliga" target="_blank">youtube.com/c/bundesliga</a>
+            </div>
+            <div class="channel-item">
+                <strong>Sky Sports Football</strong>
+                <a href="https://www.youtube.com/c/skysportsfootball" target="_blank">youtube.com/c/skysportsfootball</a>
+            </div>
+            <div class="channel-item">
+                <strong>ESPN FC</strong>
+                <a href="https://www.youtube.com/c/espnfc" target="_blank">youtube.com/c/espnfc</a>
+            </div>
+            <div class="channel-item">
+                <strong>BT Sport</strong>
+                <a href="https://www.youtube.com/c/btsport" target="_blank">youtube.com/c/btsport</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

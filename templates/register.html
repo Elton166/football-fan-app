@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Register</h2>
+            <form id="register-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="favorite_team">Favorite Team (Optional)</label>
+                    <input type="text" id="favorite_team" name="favorite_team">
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Register</button>
+                <div id="error-message" class="error-message"></div>
+            </form>
+            <p class="auth-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+function handleRegister(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const favorite_team = document.getElementById('favorite_team').value;
+    
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password, favorite_team })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = '/';
+        } else {
+            document.getElementById('error-message').textContent = data.error;
+        }
+    })
+    .catch(error => {
+        document.getElementById('error-message').textContent = 'An error occurred';
+    });
+}
+</script>
+{% endblock %}

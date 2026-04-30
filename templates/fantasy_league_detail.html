@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}{{ league.name }} - Fantasy League{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ league.name }}</h1>
+        <p>League Code: <strong>{{ league.code }}</strong></p>
+    </div>
+
+    <div class="league-info-box">
+        <div class="info-item">
+            <span class="info-label">Teams</span>
+            <span class="info-value">{{ teams|length }}/{{ league.max_teams }}</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Budget</span>
+            <span class="info-value">${{ league.budget }}M</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Created By</span>
+            <span class="info-value">{{ league.creator.username }}</span>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <section class="leaderboard-section">
+        <h2>🏆 Leaderboard</h2>
+        <div class="leaderboard-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Manager</th>
+                        <th>Players</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for team in teams %}
+                    <tr class="{% if loop.index <= 3 %}top-rank{% endif %}">
+                        <td>
+                            {% if loop.index == 1 %}🥇
+                            {% elif loop.index == 2 %}🥈
+                            {% elif loop.index == 3 %}🥉
+                            {% else %}{{ loop.index }}
+                            {% endif %}
+                        </td>
+                        <td class="team-name">{{ team.name }}</td>
+                        <td>{{ team.user.username }}</td>
+                        <td>{{ team.players|length }}/15</td>
+                        <td><strong>{{ team.total_points }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Share League -->
+    <section class="share-section">
+        <h2>Invite Friends</h2>
+        <div class="share-box">
+            <p>Share this code with friends to invite them to the league:</p>
+            <div class="code-display">
+                <h1>{{ league.code }}</h1>
+                <button onclick="copyCode()" class="btn btn-secondary">Copy Code</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="back-link">
+        <a href="{{ url_for('fantasy') }}" class="btn btn-primary">← Back to Fantasy</a>
+    </div>
+</div>
+
+<script>
+function copyCode() {
+    const code = '{{ league.code }}';
+    navigator.clipboard.writeText(code).then(() => {
+        alert('League code copied to clipboard!');
+    });
+}
+</script>
+{% endblock %}

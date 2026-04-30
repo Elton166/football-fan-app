@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Create Fantasy League - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-container">
+        <div class="auth-card">
+            <h2>Create Fantasy League</h2>
+            <form id="create-league-form" onsubmit="createLeague(event)">
+                <div class="form-group">
+                    <label for="league-name">League Name</label>
+                    <input type="text" id="league-name" name="league-name" required placeholder="e.g., Champions League 2026">
+                </div>
+                <div class="form-group">
+                    <label for="max-teams">Maximum Teams</label>
+                    <select id="max-teams" name="max-teams">
+                        <option value="4">4 Teams</option>
+                        <option value="6">6 Teams</option>
+                        <option value="8">8 Teams</option>
+                        <option value="10" selected>10 Teams</option>
+                        <option value="12">12 Teams</option>
+                        <option value="16">16 Teams</option>
+                        <option value="20">20 Teams</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Team Budget (Millions)</label>
+                    <select id="budget" name="budget">
+                        <option value="80">$80M</option>
+                        <option value="100" selected>$100M</option>
+                        <option value="120">$120M</option>
+                        <option value="150">$150M</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create League</button>
+                <div id="error-message" class="error-message"></div>
+            </form>
+            <p class="auth-link"><a href="{{ url_for('fantasy') }}">← Back to Fantasy</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div id="success-modal" class="video-modal" style="display: none;">
+    <div class="video-modal-content" style="max-width: 500px; padding: 2rem; background: white;">
+        <h2 style="color: var(--primary-color); margin-bottom: 1rem;">League Created! 🎉</h2>
+        <p style="margin-bottom: 1rem;">Your fantasy league has been created successfully!</p>
+        <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem;">
+            <p><strong>League Code:</strong></p>
+            <h1 id="league-code" style="color: var(--primary-color); font-size: 2.5rem; margin: 0.5rem 0;"></h1>
+            <p style="font-size: 0.9rem; color: var(--text-secondary);">Share this code with friends to invite them!</p>
+        </div>
+        <button onclick="goToLeague()" class="btn btn-primary btn-full">Go to League</button>
+    </div>
+</div>
+
+<script>
+let createdLeagueId = null;
+
+function createLeague(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('league-name').value;
+    const maxTeams = parseInt(document.getElementById('max-teams').value);
+    const budget = parseInt(document.getElementById('budget').value);
+    
+    fetch('/fantasy/create-league', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, max_teams: maxTeams, budget })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            createdLeagueId = data.league_id;
+            document.getElementById('league-code').textContent = data.code;
+            document.getElementById('success-modal').style.display = 'flex';
+        } else {
+            document.getElementById('error-message').textContent = data.error || 'Error creating league';
+        }
+    })
+    .catch(error => {
+        document.getElementById('error-message').textContent = 'An error occurred';
+    });
+}
+
+function goToLeague() {
+    window.location.href = `/fantasy/league/${createdLeagueId}`;
+}
+</script>
+{% endblock %}

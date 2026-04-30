@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>💭 Football Chat Rooms</h1>
+        <p>Join a chat room and discuss football with fans worldwide</p>
+    </div>
+
+    <div class="chat-rooms-grid">
+        <a href="{{ url_for('chat_room', room='general') }}" class="chat-room-card">
+            <h3>🌍 General Chat</h3>
+            <p>Discuss all things football</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='premier-league') }}" class="chat-room-card">
+            <h3>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</h3>
+            <p>English football discussion</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='la-liga') }}" class="chat-room-card">
+            <h3>🇪🇸 La Liga</h3>
+            <p>Spanish football discussion</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='serie-a') }}" class="chat-room-card">
+            <h3>🇮🇹 Serie A</h3>
+            <p>Italian football discussion</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='bundesliga') }}" class="chat-room-card">
+            <h3>🇩🇪 Bundesliga</h3>
+            <p>German football discussion</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='champions-league') }}" class="chat-room-card">
+            <h3>🏆 Champions League</h3>
+            <p>European competition chat</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='transfer-news') }}" class="chat-room-card">
+            <h3>📰 Transfer News</h3>
+            <p>Discuss transfers and rumors</p>
+        </a>
+        <a href="{{ url_for('chat_room', room='match-day') }}" class="chat-room-card">
+            <h3>⚽ Match Day Live</h3>
+            <p>Live match discussions</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

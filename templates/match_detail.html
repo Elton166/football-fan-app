@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Match Details - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if match %}
+    <div class="match-header">
+        <h1>Match Details</h1>
+        <div class="match-info-large">
+            <div class="team-large">
+                {% if match.match.homeTeam.crest %}
+                <img src="{{ match.match.homeTeam.crest }}" alt="{{ match.match.homeTeam.name }}" class="team-logo-large">
+                {% endif %}
+                <h2>{{ match.match.homeTeam.name }}</h2>
+            </div>
+            <div class="score-large">
+                {% if match.match.status == 'FINISHED' %}
+                    <div class="final-score">
+                        {{ match.match.score.fullTime.home }} - {{ match.match.score.fullTime.away }}
+                    </div>
+                    <div class="match-status">Full Time</div>
+                {% elif match.match.status == 'IN_PLAY' %}
+                    <div class="live-score">
+                        {{ match.match.score.fullTime.home }} - {{ match.match.score.fullTime.away }}
+                    </div>
+                    <div class="match-status live">🔴 LIVE</div>
+                {% else %}
+                    <div class="match-time">{{ match.match.utcDate }}</div>
+                    <div class="match-status">{{ match.match.status }}</div>
+                {% endif %}
+            </div>
+            <div class="team-large">
+                {% if match.match.awayTeam.crest %}
+                <img src="{{ match.match.awayTeam.crest }}" alt="{{ match.match.awayTeam.name }}" class="team-logo-large">
+                {% endif %}
+                <h2>{{ match.match.awayTeam.name }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Streams Section -->
+    {% if streams %}
+    <section class="streams-section">
+        <h2>📺 Live Streams</h2>
+        <div class="streams-grid">
+            {% for stream in streams %}
+            <div class="stream-card">
+                <h3>{{ stream.platform or 'Stream' }}</h3>
+                <a href="{{ stream.stream_url }}" target="_blank" class="btn btn-primary">Watch Live</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Highlights Section -->
+    <section class="highlights-section">
+        <h2>🎥 Match Highlights</h2>
+        
+        {% if highlights %}
+        <div class="highlights-grid">
+            {% for highlight in highlights %}
+            <div class="highlight-card">
+                <div class="highlight-thumbnail">
+                    {% if highlight.thumbnail_url %}
+                    <img src="{{ highlight.thumbnail_url }}" alt="{{ highlight.title }}">
+                    {% else %}
+                    <div class="highlight-placeholder">🎥</div>
+                    {% endif %}
+                    <div class="play-overlay">
+                        <span class="play-icon">▶</span>
+                    </div>
+                </div>
+                <div class="highlight-info">
+                    <h3>{{ highlight.title }}</h3>
+                    {% if highlight.channel %}
+                    <p class="highlight-channel">{{ highlight.channel }}</p>
+                    {% endif %}
+                    <a href="{{ highlight.video_url }}" target="_blank" class="btn btn-secondary">Watch on YouTube</a>
+                    {% if highlight.embed_url %}
+                    <button onclick="showVideo('{{ highlight.embed_url }}')" class="btn btn-primary">Watch Here</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-highlights">
+            <p>No highlights available yet for this match.</p>
+            <p>Check back later or visit official league channels:</p>
+            <div class="highlight-links">
+                <a href="https://www.youtube.com/c/premierleague" target="_blank" class="btn btn-small">Premier League</a>
+                <a href="https://www.youtube.com/c/championsleague" target="_blank" class="btn btn-small">Champions League</a>
+                <a href="https://www.youtube.com/c/laliga" target="_blank" class="btn btn-small">La Liga</a>
+            </div>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="video-modal" onclick="closeVideo()">
+        <div class="video-modal-content" onclick="event.stopPropagation()">
+            <span class="video-close" onclick="closeVideo()">&times;</span>
+            <iframe id="video-player" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Opinions Section -->
+    <section class="opinions-section">
+        <h2>💬 Fan Opinions</h2>
+        
+        {% if session.get('user_id') %}
+        <div class="opinion-form">
+            <h3>Share Your Opinion</h3>
+            <textarea id="opinion-text" placeholder="What do you think about this match?" rows="4"></textarea>
+            <button onclick="postOpinion()" class="btn btn-primary">Post Opinion</button>
+        </div>
+        {% else %}
+        <div class="login-prompt">
+            <p>Please <a href="{{ url_for('login') }}">login</a> to share your opinion</p>
+        </div>
+        {% endif %}
+
+        <div class="opinions-list">
+            {% for opinion in opinions %}
+            <div class="opinion-card">
+                <div class="opinion-header">
+                    <strong>{{ opinion.user.username }}</strong>
+                    <span class="opinion-date">{{ opinion.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <p class="opinion-content">{{ opinion.content }}</p>
+                <div class="opinion-actions">
+                    <button onclick="likeOpinion({{ opinion.id }})" class="btn-like">
+                        👍 <span id="likes-{{ opinion.id }}">{{ opinion.likes }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% else %}
+    <div class="no-data">
+        <p>⚠️ Unable to load match data.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+const matchId = "{{ match_id }}";
+
+function postOpinion() {
+    const content = document.getElementById('opinion-text').value;
+    if (!content.trim()) {
+        alert('Please enter your opinion');
+        return;
+    }
+
+    fetch('/api/opinion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            match_id: matchId,
+            content: content
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error posting opinion');
+        }
+    });
+}
+
+function likeOpinion(opinionId) {
+    fetch(`/api/opinion/${opinionId}/like`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById(`likes-${opinionId}`).textContent = data.likes;
+        }
+    });
+}
+
+function showVideo(embedUrl) {
+    const modal = document.getElementById('video-modal');
+    const player = document.getElementById('video-player');
+    player.src = embedUrl;
+    modal.style.display = 'flex';
+}
+
+function closeVideo() {
+    const modal = document.getElementById('video-modal');
+    const player = document.getElementById('video-player');
+    player.src = '';
+    modal.style.display = 'none';
+}
+</script>
+{% endblock %}

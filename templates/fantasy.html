@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Fantasy League - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>⚽ Fantasy Football League</h1>
+        <p>Create your dream team and compete with friends!</p>
+    </div>
+
+    <!-- User's Teams -->
+    <section class="fantasy-section">
+        <div class="section-header">
+            <h2>My Teams</h2>
+            <a href="{{ url_for('create_fantasy_league') }}" class="btn btn-primary">Create New League</a>
+        </div>
+
+        {% if user_teams %}
+        <div class="teams-grid">
+            {% for team in user_teams %}
+            <div class="fantasy-team-card">
+                <div class="team-card-header">
+                    <h3>{{ team.name }}</h3>
+                    <span class="team-points">{{ team.total_points }} pts</span>
+                </div>
+                <div class="team-card-body">
+                    <p><strong>League:</strong> {{ team.league.name }}</p>
+                    <p><strong>Budget Remaining:</strong> ${{ team.budget_remaining }}M</p>
+                    <p><strong>Players:</strong> {{ team.players|length }}/15</p>
+                </div>
+                <div class="team-card-actions">
+                    <a href="{{ url_for('fantasy_team', team_id=team.id) }}" class="btn btn-secondary">Manage Team</a>
+                    <a href="{{ url_for('fantasy_league_detail', league_id=team.league_id) }}" class="btn btn-small">View League</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🏆</div>
+            <h3>No Teams Yet</h3>
+            <p>Create a league or join an existing one to get started!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Join League -->
+    <section class="fantasy-section">
+        <h2>Join a League</h2>
+        <div class="join-league-form">
+            <input type="text" id="league-code" placeholder="Enter League Code" maxlength="8">
+            <button onclick="joinLeague()" class="btn btn-primary">Join League</button>
+        </div>
+    </section>
+
+    <!-- Available Leagues -->
+    <section class="fantasy-section">
+        <h2>Public Leagues</h2>
+        {% if available_leagues %}
+        <div class="leagues-list">
+            {% for league in available_leagues %}
+            <div class="league-item">
+                <div class="league-info">
+                    <h3>{{ league.name }}</h3>
+                    <p>Code: <strong>{{ league.code }}</strong></p>
+                    <p>Teams: {{ league.teams|length }}/{{ league.max_teams }}</p>
+                    <p>Budget: ${{ league.budget }}M</p>
+                </div>
+                <div class="league-actions">
+                    <a href="{{ url_for('join_fantasy_league', code=league.code) }}" class="btn btn-secondary">Join</a>
+                    <a href="{{ url_for('fantasy_league_detail', league_id=league.id) }}" class="btn btn-small">View</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No public leagues available. Create one!</p>
+        {% endif %}
+    </section>
+
+    <!-- How It Works -->
+    <section class="info-section">
+        <h2>How Fantasy League Works</h2>
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-icon">1️⃣</div>
+                <h3>Create or Join</h3>
+                <p>Start a new league or join an existing one with a code</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">2️⃣</div>
+                <h3>Build Your Team</h3>
+                <p>Select 15 players within your budget (GK, DEF, MID, FWD)</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">3️⃣</div>
+                <h3>Earn Points</h3>
+                <p>Players score points based on real match performance</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">4️⃣</div>
+                <h3>Compete</h3>
+                <p>Climb the leaderboard and become the champion!</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+function joinLeague() {
+    const code = document.getElementById('league-code').value.trim().toUpperCase();
+    if (!code) {
+        alert('Please enter a league code');
+        return;
+    }
+    window.location.href = `/fantasy/join/${code}`;
+}
+</script>
+{% endblock %}

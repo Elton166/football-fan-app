@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ room }} Chat - Football Fan App{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>💭 {{ room|replace('-', ' ')|title }} Chat</h2>
+            <a href="{{ url_for('chat') }}" class="btn btn-small">← Back to Rooms</a>
+        </div>
+
+        <div class="chat-box">
+            <div id="messages" class="messages-container"></div>
+        </div>
+
+        <div class="chat-input-container">
+            <input type="text" id="message-input" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()" class="btn btn-primary">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const socket = io();
+const room = "{{ room }}";
+const username = "{{ session.get('username', 'Anonymous') }}";
+
+// Join the room
+socket.emit('join', { room: room });
+
+// Listen for messages
+socket.on('message', function(data) {
+    const messagesDiv = document.getElementById('messages');
+    const messageElement = document.createElement('div');
+    messageElement.className = 'message';
+    
+    if (data.username === 'System') {
+        messageElement.className += ' system-message';
+    } else if (data.username === username) {
+        messageElement.className += ' own-message';
+    }
+    
+    messageElement.innerHTML = `
+        <div class="message-header">
+            <strong>${data.username}</strong>
+            ${data.timestamp ? `<span class="message-time">${data.timestamp}</span>` : ''}
+        </div>
+        <div class="message-content">${escapeHtml(data.message)}</div>
+    `;
+    
+    messagesDiv.appendChild(messageElement);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
+
+function sendMessage() {
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
+    
+    if (message) {
+        socket.emit('send_message', {
+            room: room,
+            message: message
+        });
+        input.value = '';
+    }
+}
+
+function handleKeyPress(event) {
+    if (event.key === 'Enter') {
+        sendMessage();
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Leave room when page is closed
+window.addEventListener('beforeunload', function() {
+    socket.emit('leave', { room: room });
+});
+</script>
+{% endblock %}

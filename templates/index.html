@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1>Welcome to Football Fan App ⚽</h1>
+        <p class="hero-subtitle">Your ultimate destination for football leagues, live matches, and fan discussions</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('leagues') }}" class="btn btn-primary">Explore Leagues</a>
+            <a href="{{ url_for('fantasy') }}" class="btn btn-secondary">Play Fantasy</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <section class="features">
+        <h2>Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Fantasy League</h3>
+                <p>Create your dream team, compete with friends, and climb the leaderboard. Build your squad within budget!</p>
+                <a href="{{ url_for('fantasy') }}" class="btn btn-primary" style="margin-top: 1rem;">Play Now</a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Global Leagues</h3>
+                <p>Access all major football leagues from around the world including Premier League, La Liga, Serie A, Bundesliga, and more.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>Fan Opinions</h3>
+                <p>Share your thoughts on matches, players, and teams. Engage with fellow fans and discuss the beautiful game.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💭</div>
+                <h3>Live Chat</h3>
+                <p>Join real-time chat rooms for specific matches or leagues. Connect with fans worldwide during live games.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎥</div>
+                <h3>Match Highlights</h3>
+                <p>Watch highlights from previous games. Never miss the best moments from your favorite matches.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📺</div>
+                <h3>Live Streams</h3>
+                <p>Find links to live football streams. Watch matches as they happen from anywhere in the world.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>League Tables</h3>
+                <p>View current standings, fixtures, and results. Stay updated with the latest league positions.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="popular-leagues">
+        <h2>Popular Leagues</h2>
+        <div class="league-grid">
+            <a href="{{ url_for('league_detail', league_code='PL') }}" class="league-card">
+                <div class="league-card-logo">
+                    <img src="https://crests.football-data.org/PL.png" alt="Premier League" class="league-icon">
+                </div>
+                <h3>Premier League</h3>
+                <p>England</p>
+            </a>
+            <a href="{{ url_for('league_detail', league_code='PD') }}" class="league-card">
+                <div class="league-card-logo">
+                    <img src="https://crests.football-data.org/PD.png" alt="La Liga" class="league-icon">
+                </div>
+                <h3>La Liga</h3>
+                <p>Spain</p>
+            </a>
+            <a href="{{ url_for('league_detail', league_code='SA') }}" class="league-card">
+                <div class="league-card-logo">
+                    <img src="https://crests.football-data.org/SA.png" alt="Serie A" class="league-icon">
+                </div>
+                <h3>Serie A</h3>
+                <p>Italy</p>
+            </a>
+            <a href="{{ url_for('league_detail', league_code='BL1') }}" class="league-card">
+                <div class="league-card-logo">
+                    <img src="https://crests.football-data.org/BL1.png" alt="Bundesliga" class="league-icon">
+                </div>
+                <h3>Bundesliga</h3>
+                <p>Germany</p>
+            </a>
+            <a href="{{ url_for('league_detail', league_code='FL1') }}" class="league-card">
+                <div class="league-card-logo">
+                    <img src="https://crests.football-data.org/FL1.png" alt="Ligue 1" class="league-icon">
+                </div>
+                <h3>Ligue 1</h3>
+                <p>France</p>
+            </a>
+            <a href="{{ url_for('league_detail', league_code='CL') }}" class="league-card">
+                <div class="league-card-logo">
+                    <img src="https://crests.football-data.org/CL.png" alt="Champions League" class="league-icon">
+                </div>
+                <h3>Champions League</h3>
+                <p>Europe</p>
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
