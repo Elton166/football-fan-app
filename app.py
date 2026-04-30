@@ -251,16 +251,7 @@ def highlights():
 # Fantasy League Routes
 @app.route('/fantasy')
 def fantasy():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    
-    # Get user's teams
-    user_teams = FantasyTeam.query.filter_by(user_id=session['user_id']).all()
-    
-    # Get available leagues
-    available_leagues = FantasyLeague.query.filter_by(is_active=True).all()
-    
-    return render_template('fantasy.html', user_teams=user_teams, available_leagues=available_leagues)
+    return render_template('fantasy.html')
 
 @app.route('/fantasy/create-league', methods=['GET', 'POST'])
 def create_fantasy_league():

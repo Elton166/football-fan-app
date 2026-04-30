@@ -5,118 +5,21 @@
 {% block content %}
 <div class="container">
     <div class="page-header">
-        <h1>⚽ Fantasy Football League</h1>
-        <p>Create your dream team and compete with friends!</p>
+        <h1>⚽ Fantasy Football Leagues</h1>
+        <p>Play official fantasy leagues from top competitions around the world!</p>
     </div>
-
-    <!-- User's Teams -->
-    <section class="fantasy-section">
-        <div class="section-header">
-            <h2>My Teams</h2>
-            <a href="{{ url_for('create_fantasy_league') }}" class="btn btn-primary">Create New League</a>
-        </div>
-
-        {% if user_teams %}
-        <div class="teams-grid">
-            {% for team in user_teams %}
-            <div class="fantasy-team-card">
-                <div class="team-card-header">
-                    <h3>{{ team.name }}</h3>
-                    <span class="team-points">{{ team.total_points }} pts</span>
-                </div>
-                <div class="team-card-body">
-                    <p><strong>League:</strong> {{ team.league.name }}</p>
-                    <p><strong>Budget Remaining:</strong> ${{ team.budget_remaining }}M</p>
-                    <p><strong>Players:</strong> {{ team.players|length }}/15</p>
-                </div>
-                <div class="team-card-actions">
-                    <a href="{{ url_for('fantasy_team', team_id=team.id) }}" class="btn btn-secondary">Manage Team</a>
-                    <a href="{{ url_for('fantasy_league_detail', league_id=team.league_id) }}" class="btn btn-small">View League</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <div class="empty-state">
-            <div class="empty-icon">🏆</div>
-            <h3>No Teams Yet</h3>
-            <p>Create a league or join an existing one to get started!</p>
-        </div>
-        {% endif %}
-    </section>
-
-    <!-- Join League -->
-    <section class="fantasy-section">
-        <h2>Join a League</h2>
-        <div class="join-league-form">
-            <input type="text" id="league-code" placeholder="Enter League Code" maxlength="8">
-            <button onclick="joinLeague()" class="btn btn-primary">Join League</button>
-        </div>
-    </section>
-
-    <!-- Available Leagues -->
-    <section class="fantasy-section">
-        <h2>Public Leagues</h2>
-        {% if available_leagues %}
-        <div class="leagues-list">
-            {% for league in available_leagues %}
-            <div class="league-item">
-                <div class="league-info">
-                    <h3>{{ league.name }}</h3>
-                    <p>Code: <strong>{{ league.code }}</strong></p>
-                    <p>Teams: {{ league.teams|length }}/{{ league.max_teams }}</p>
-                    <p>Budget: ${{ league.budget }}M</p>
-                </div>
-                <div class="league-actions">
-                    <a href="{{ url_for('join_fantasy_league', code=league.code) }}" class="btn btn-secondary">Join</a>
-                    <a href="{{ url_for('fantasy_league_detail', league_id=league.id) }}" class="btn btn-small">View</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        {% else %}
-        <p>No public leagues available. Create one!</p>
-        {% endif %}
-    </section>
-
-    <!-- How It Works -->
-    <section class="info-section">
-        <h2>How Fantasy League Works</h2>
-        <div class="info-cards">
-            <div class="info-card">
-                <div class="info-icon">1️⃣</div>
-                <h3>Create or Join</h3>
-                <p>Start a new league or join an existing one with a code</p>
-            </div>
-            <div class="info-card">
-                <div class="info-icon">2️⃣</div>
-                <h3>Build Your Team</h3>
-                <p>Select 15 players within your budget (GK, DEF, MID, FWD)</p>
-            </div>
-            <div class="info-card">
-                <div class="info-icon">3️⃣</div>
-                <h3>Earn Points</h3>
-                <p>Players score points based on real match performance</p>
-            </div>
-            <div class="info-card">
-                <div class="info-icon">4️⃣</div>
-                <h3>Compete</h3>
-                <p>Climb the leaderboard and become the champion!</p>
-            </div>
-        </div>
-    </section>
 
     <!-- Official Fantasy Leagues -->
     <section class="fantasy-section">
         <h2>🏆 Official Fantasy Leagues</h2>
-        <p class="section-subtitle">Play the official fantasy leagues from top competitions</p>
+        <p class="section-subtitle">Join millions of fans in official fantasy competitions</p>
         <div class="official-fantasy-grid">
-            <a href="https://fantasy.premierleague.com/" target="_blank" class="official-fantasy-card">
+            <a href="https://fantasy.premierleague.com/" target="_blank" class="official-fantasy-card featured">
                 <div class="fantasy-logo">
                     <img src="https://crests.football-data.org/PL.png" alt="Premier League">
                 </div>
                 <h3>Premier League Fantasy</h3>
-                <p>Official EPL Fantasy - Compete with millions worldwide</p>
+                <p>Official EPL Fantasy - The world's most popular fantasy football game. Compete with millions worldwide!</p>
                 <span class="external-link">Play Now →</span>
             </a>
             <a href="https://gaming.uefa.com/en/uclfantasy" target="_blank" class="official-fantasy-card">
@@ -124,7 +27,7 @@
                     <img src="https://crests.football-data.org/CL.png" alt="Champions League">
                 </div>
                 <h3>UEFA Champions League</h3>
-                <p>Official UCL Fantasy - Pick your European dream team</p>
+                <p>Official UCL Fantasy - Pick your European dream team and compete in the Champions League</p>
                 <span class="external-link">Play Now →</span>
             </a>
             <a href="https://fantasy.laliga.com/" target="_blank" class="official-fantasy-card">
@@ -132,7 +35,7 @@
                     <img src="https://crests.football-data.org/PD.png" alt="La Liga">
                 </div>
                 <h3>LaLiga Fantasy</h3>
-                <p>Official La Liga Fantasy - Manage your Spanish squad</p>
+                <p>Official La Liga Fantasy - Manage your Spanish squad with the best players from Spain</p>
                 <span class="external-link">Play Now →</span>
             </a>
             <a href="https://www.bundesliga.com/en/bundesliga/news/official-fantasy-bundesliga-manager-game-how-to-play-register-18397" target="_blank" class="official-fantasy-card">
@@ -140,21 +43,90 @@
                     <img src="https://crests.football-data.org/BL1.png" alt="Bundesliga">
                 </div>
                 <h3>Bundesliga Fantasy</h3>
-                <p>Official Bundesliga Fantasy - Build your German team</p>
+                <p>Official Bundesliga Fantasy - Build your German team with top Bundesliga talent</p>
+                <span class="external-link">Play Now →</span>
+            </a>
+            <a href="https://www.serie-a.com/en/fantasy" target="_blank" class="official-fantasy-card">
+                <div class="fantasy-logo">
+                    <img src="https://crests.football-data.org/SA.png" alt="Serie A">
+                </div>
+                <h3>Serie A Fantasy</h3>
+                <p>Official Serie A Fantasy - Create your Italian dream team with Serie A stars</p>
+                <span class="external-link">Play Now →</span>
+            </a>
+            <a href="https://www.ligue1.com/fantasy" target="_blank" class="official-fantasy-card">
+                <div class="fantasy-logo">
+                    <img src="https://crests.football-data.org/FL1.png" alt="Ligue 1">
+                </div>
+                <h3>Ligue 1 Fantasy</h3>
+                <p>Official Ligue 1 Fantasy - Manage your French squad with top Ligue 1 players</p>
                 <span class="external-link">Play Now →</span>
             </a>
         </div>
     </section>
-</div>
 
-<script>
-function joinLeague() {
-    const code = document.getElementById('league-code').value.trim().toUpperCase();
-    if (!code) {
-        alert('Please enter a league code');
-        return;
-    }
-    window.location.href = `/fantasy/join/${code}`;
-}
-</script>
+    <!-- How Fantasy Works -->
+    <section class="info-section">
+        <h2>How Fantasy Football Works</h2>
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="info-icon">1️⃣</div>
+                <h3>Register</h3>
+                <p>Sign up for free on any official fantasy league website</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">2️⃣</div>
+                <h3>Build Your Squad</h3>
+                <p>Select players within your budget from real teams</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">3️⃣</div>
+                <h3>Earn Points</h3>
+                <p>Players score points based on their real match performance</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon">4️⃣</div>
+                <h3>Compete & Win</h3>
+                <p>Climb the leaderboard and compete for prizes!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Play Fantasy -->
+    <section class="fantasy-section">
+        <h2>Why Play Fantasy Football?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🎮</div>
+                <h3>Free to Play</h3>
+                <p>All official fantasy leagues are completely free to join and play</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🏆</div>
+                <h3>Win Prizes</h3>
+                <p>Compete for official prizes and bragging rights</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">👥</div>
+                <h3>Play with Friends</h3>
+                <p>Create private leagues and compete with your friends</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📊</div>
+                <h3>Real Stats</h3>
+                <p>Points based on actual player performance in real matches</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📱</div>
+                <h3>Mobile Apps</h3>
+                <p>Manage your team on the go with official mobile apps</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🌍</div>
+                <h3>Global Competition</h3>
+                <p>Compete with millions of fans from around the world</p>
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}
