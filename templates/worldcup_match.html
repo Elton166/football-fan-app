@@ -7,7 +7,10 @@
     {% if match and match.match %}
     <div class="worldcup-match-header">
         <a href="{{ url_for('worldcup') }}" class="back-link">← Back to World Cup</a>
-        <h1>🏆 FIFA World Cup Match</h1>
+        <div class="worldcup-emblem-small">
+            <img src="https://crests.football-data.org/WC.png" alt="FIFA World Cup" class="wc-logo-small">
+        </div>
+        <h1>FIFA World Cup Match</h1>
         <div class="match-stage">{{ match.match.stage|replace('_', ' ')|title }}</div>
         
         <div class="match-info-large">

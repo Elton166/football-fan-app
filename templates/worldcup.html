@@ -7,7 +7,10 @@
     <!-- World Cup Header -->
     <div class="worldcup-header">
         <div class="worldcup-hero">
-            <h1>🏆 FIFA World Cup</h1>
+            <div class="worldcup-emblem">
+                <img src="https://crests.football-data.org/WC.png" alt="FIFA World Cup" class="wc-logo">
+            </div>
+            <h1>FIFA World Cup</h1>
             {% if worldcup and worldcup.competition %}
             <p class="worldcup-subtitle">{{ worldcup.competition.name }}</p>
             <p class="worldcup-season">{{ worldcup.season.startDate }} - {{ worldcup.season.endDate }}</p>
