@@ -1,0 +1,42 @@
+{% macro football_image(src, alt, fallback='', css_class='', width='', height='') %}
+<div class="image-container">
+    <div class="shimmer-placeholder"></div>
+    <img 
+        data-football-img
+        src="{{ src }}" 
+        alt="{{ alt }}"
+        {% if fallback %}data-fallback="{{ fallback }}"{% endif %}
+        class="football-image hidden {{ css_class }}"
+        {% if width %}width="{{ width }}"{% endif %}
+        {% if height %}height="{{ height }}"{% endif %}
+        loading="lazy"
+    >
+</div>
+{% endmacro %}
+
+{% macro team_crest(src, team_name, size='medium') %}
+{% set size_class = 'team-crest' if size == 'small' else 'team-crest-large' if size == 'large' else 'team-crest' %}
+<img 
+    data-football-img
+    src="{{ src }}" 
+    alt="{{ team_name }}"
+    data-fallback="https://via.placeholder.com/50x50/00a86b/ffffff?text={{ team_name[0] }}"
+    class="{{ size_class }}"
+    loading="lazy"
+>
+{% endmacro %}
+
+{% macro league_logo(src, league_name, size='80') %}
+<div class="league-logo-container">
+    <img 
+        data-football-img
+        src="{{ src }}" 
+        alt="{{ league_name }}"
+        data-fallback="https://via.placeholder.com/{{ size }}x{{ size }}/00a86b/ffffff?text=⚽"
+        class="league-logo"
+        width="{{ size }}"
+        height="{{ size }}"
+        loading="lazy"
+    >
+</div>
+{% endmacro %}

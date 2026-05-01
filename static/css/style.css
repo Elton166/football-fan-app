@@ -2099,3 +2099,195 @@ body {
         text-align: center;
     }
 }
+
+
+/* Modern Football Image Styles */
+.image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px 8px 24px 8px;
+    background: var(--light-bg);
+}
+
+.football-image {
+    position: relative;
+    border-radius: 24px 8px 24px 8px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+                filter 0.3s ease,
+                opacity 0.3s ease;
+    display: block;
+}
+
+.football-image.hidden {
+    opacity: 0;
+}
+
+.football-image.loaded {
+    opacity: 1;
+}
+
+.football-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,255,0,0.2), rgba(0,0,0,0.6));
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.football-image:hover {
+    filter: drop-shadow(0 0 8px #00ff99) brightness(1.05);
+    transform: scale(1.02) rotate(0.5deg);
+}
+
+.football-image:hover::after {
+    opacity: 1;
+}
+
+/* Shimmer Loading Effect */
+.shimmer-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 20%,
+        #f0f0f0 40%,
+        #f0f0f0 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 24px 8px 24px 8px;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Team Crest Enhancements */
+.team-crest,
+.team-flag,
+.team-flag-large,
+.league-logo,
+.team-logo-large,
+.wc-logo,
+.wc-logo-small {
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+                filter 0.3s ease;
+}
+
+.team-crest:hover,
+.team-flag:hover,
+.team-flag-large:hover,
+.league-logo:hover {
+    transform: scale(1.1) rotate(2deg);
+    filter: drop-shadow(0 4px 12px rgba(0, 168, 107, 0.4));
+}
+
+/* League Logo Container */
+.league-logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.league-logo-container::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.league-logo-container:hover::before {
+    opacity: 0.2;
+}
+
+/* Highlight Thumbnail Enhancements */
+.highlight-thumbnail {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px 8px 24px 8px;
+}
+
+.highlight-thumbnail img {
+    transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.highlight-card:hover .highlight-thumbnail img {
+    transform: scale(1.1);
+}
+
+/* Fantasy Logo Enhancements */
+.fantasy-logo img {
+    transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+                filter 0.3s ease;
+}
+
+.official-fantasy-card:hover .fantasy-logo img {
+    transform: scale(1.15) rotate(-5deg);
+    filter: drop-shadow(0 8px 16px rgba(0, 168, 107, 0.3));
+}
+
+/* Loading State for Images */
+img[data-src] {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+img[data-src].loaded {
+    opacity: 1;
+}
+
+/* Responsive Image Adjustments */
+@media (max-width: 768px) {
+    .football-image:hover {
+        transform: scale(1.01);
+    }
+    
+    .image-container {
+        border-radius: 16px 6px 16px 6px;
+    }
+    
+    .football-image,
+    .shimmer-placeholder {
+        border-radius: 16px 6px 16px 6px;
+    }
+}
+
+/* Accessibility - Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .football-image,
+    .team-crest,
+    .team-flag,
+    .highlight-thumbnail img {
+        transition: none;
+        animation: none;
+    }
+    
+    .shimmer-placeholder {
+        animation: none;
+        background: #f0f0f0;
+    }
+}
