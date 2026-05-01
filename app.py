@@ -248,6 +248,36 @@ def highlights():
     
     return render_template('highlights.html', popular=popular, recent=recent)
 
+# World Cup Routes
+@app.route('/worldcup')
+def worldcup():
+    # Get World Cup competition data
+    worldcup_data = call_football_api('competitions/WC')
+    matches = call_football_api('competitions/WC/matches')
+    standings = call_football_api('competitions/WC/standings')
+    
+    return render_template('worldcup.html', 
+                         worldcup=worldcup_data, 
+                         matches=matches, 
+                         standings=standings)
+
+@app.route('/worldcup/match/<match_id>')
+def worldcup_match(match_id):
+    # Get match details
+    match = call_football_api(f'matches/{match_id}')
+    
+    # Get opinions for this match
+    opinions = Opinion.query.filter_by(match_id=match_id).order_by(Opinion.created_at.desc()).all()
+    
+    # Get highlights
+    highlights = Highlight.query.filter_by(match_id=match_id).all()
+    
+    return render_template('worldcup_match.html', 
+                         match=match, 
+                         opinions=opinions, 
+                         highlights=highlights,
+                         match_id=match_id)
+
 # Fantasy League Routes
 @app.route('/fantasy')
 def fantasy():

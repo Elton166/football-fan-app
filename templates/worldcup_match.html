@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}World Cup Match - Football Fan App{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if match and match.match %}
+    <div class="worldcup-match-header">
+        <a href="{{ url_for('worldcup') }}" class="back-link">← Back to World Cup</a>
+        <h1>🏆 FIFA World Cup Match</h1>
+        <div class="match-stage">{{ match.match.stage|replace('_', ' ')|title }}</div>
+        
+        <div class="match-info-large">
+            <div class="team-large">
+                {% if match.match.homeTeam.crest %}
+                <img src="{{ match.match.homeTeam.crest }}" alt="{{ match.match.homeTeam.name }}" class="team-logo-large">
+                {% endif %}
+                <h2>{{ match.match.homeTeam.name }}</h2>
+            </div>
+            
+            <div class="score-large">
+                {% if match.match.status == 'FINISHED' %}
+                    <div class="final-score">
+                        {{ match.match.score.fullTime.home }} - {{ match.match.score.fullTime.away }}
+                    </div>
+                    <div class="match-status">Full Time</div>
+                    {% if match.match.score.penalties %}
+                    <div class="penalties-score">
+                        Penalties: {{ match.match.score.penalties.home }} - {{ match.match.score.penalties.away }}
+                    </div>
+                    {% endif %}
+                {% elif match.match.status == 'IN_PLAY' %}
+                    <div class="live-score">
+                        {{ match.match.score.fullTime.home }} - {{ match.match.score.fullTime.away }}
+                    </div>
+                    <div class="match-status live">🔴 LIVE</div>
+                {% else %}
+                    <div class="match-time">{{ match.match.utcDate }}</div>
+                    <div class="match-status">{{ match.match.status }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="team-large">
+                {% if match.match.awayTeam.crest %}
+                <img src="{{ match.match.awayTeam.crest }}" alt="{{ match.match.awayTeam.name }}" class="team-logo-large">
+                {% endif %}
+                <h2>{{ match.match.awayTeam.name }}</h2>
+            </div>
+        </div>
+
+        {% if match.match.venue %}
+        <div class="match-venue-info">
+            <span>📍 {{ match.match.venue }}</span>
+            {% if match.match.attendance %}
+            <span>👥 Attendance: {{ match.match.attendance }}</span>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Match Highlights -->
+    {% if highlights %}
+    <section class="highlights-section">
+        <h2>🎥 Match Highlights</h2>
+        <div class="highlights-grid">
+            {% for highlight in highlights %}
+            <div class="highlight-card">
+                {% if highlight.thumbnail_url %}
+                <img src="{{ highlight.thumbnail_url }}" alt="{{ highlight.title }}">
+                {% endif %}
+                <h3>{{ highlight.title }}</h3>
+                <a href="{{ highlight.video_url }}" target="_blank" class="btn btn-secondary">Watch Highlights</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Fan Opinions -->
+    <section class="opinions-section">
+        <h2>💬 Fan Opinions</h2>
+        
+        {% if session.get('user_id') %}
+        <div class="opinion-form">
+            <h3>Share Your Opinion</h3>
+            <textarea id="opinion-text" placeholder="What do you think about this match?" rows="4"></textarea>
+            <button onclick="postOpinion()" class="btn btn-primary">Post Opinion</button>
+        </div>
+        {% else %}
+        <div class="login-prompt">
+            <p>Please <a href="{{ url_for('login') }}">login</a> to share your opinion</p>
+        </div>
+        {% endif %}
+
+        <div class="opinions-list">
+            {% for opinion in opinions %}
+            <div class="opinion-card">
+                <div class="opinion-header">
+                    <strong>{{ opinion.user.username }}</strong>
+                    <span class="opinion-date">{{ opinion.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <p class="opinion-content">{{ opinion.content }}</p>
+                <div class="opinion-actions">
+                    <button onclick="likeOpinion({{ opinion.id }})" class="btn-like">
+                        👍 <span id="likes-{{ opinion.id }}">{{ opinion.likes }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% else %}
+    <div class="no-data">
+        <p>⚠️ Unable to load match data.</p>
+        <a href="{{ url_for('worldcup') }}" class="btn btn-primary">← Back to World Cup</a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+const matchId = "{{ match_id }}";
+
+function postOpinion() {
+    const content = document.getElementById('opinion-text').value;
+    if (!content.trim()) {
+        alert('Please enter your opinion');
+        return;
+    }
+
+    fetch('/api/opinion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            match_id: matchId,
+            content: content
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error posting opinion');
+        }
+    });
+}
+
+function likeOpinion(opinionId) {
+    fetch(`/api/opinion/${opinionId}/like`, {
+        method: 'POST'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById(`likes-${opinionId}`).textContent = data.likes;
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1633,3 +1633,439 @@ body {
 .benefit-card p {
     color: var(--text-secondary);
 }
+
+
+/* World Cup Styles */
+.worldcup-header {
+    background: linear-gradient(135deg, #8B0000, #FFD700);
+    color: white;
+    padding: 3rem 0;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.worldcup-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.worldcup-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.worldcup-season {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.worldcup-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.worldcup-tab-content {
+    display: none;
+    padding: 2rem 0;
+}
+
+.worldcup-tab-content.active {
+    display: block;
+}
+
+.worldcup-matches {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.stage-header {
+    color: var(--primary-color);
+    margin: 2rem 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.worldcup-match-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.worldcup-match-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.match-info-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.match-venue {
+    margin-left: auto;
+}
+
+.worldcup-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.worldcup-team {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.worldcup-team:last-child {
+    justify-content: flex-end;
+}
+
+.team-flag {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.team-flag-large {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.worldcup-score {
+    text-align: center;
+    min-width: 120px;
+}
+
+.score-display {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.score-display.live {
+    color: var(--danger-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.match-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    background: var(--light-bg);
+}
+
+.match-status.live {
+    background: var(--danger-color);
+    color: white;
+}
+
+.match-status.finished {
+    background: var(--success-color);
+    color: white;
+}
+
+.match-status.paused {
+    background: var(--warning-color);
+    color: var(--dark-bg);
+}
+
+.match-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* Groups Grid */
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.group-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.group-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    margin: 0;
+}
+
+.group-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.group-table th,
+.group-table td {
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.group-table th {
+    background: var(--light-bg);
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.group-table .team-cell {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.mini-flag {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.group-table tr.qualified {
+    background: rgba(0, 168, 107, 0.1);
+}
+
+.group-table tr:hover {
+    background: var(--light-bg);
+}
+
+/* Knockout Stage */
+.knockout-info {
+    background: var(--light-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.knockout-stages {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.knockout-match-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.knockout-stage-label {
+    text-align: center;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.knockout-teams {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.knockout-team {
+    text-align: center;
+    flex: 1;
+}
+
+.knockout-team span {
+    display: block;
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.knockout-score {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 100px;
+    text-align: center;
+}
+
+.knockout-details {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* World Cup Match Header */
+.worldcup-match-header {
+    background: linear-gradient(135deg, #8B0000, #FFD700);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.worldcup-match-header .back-link {
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.worldcup-match-header .back-link:hover {
+    text-decoration: underline;
+}
+
+.match-stage {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.match-venue-info {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.penalties-score {
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    opacity: 0.9;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.info-box {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.info-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.info-box h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+/* World Cup History */
+.worldcup-history {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+
+.worldcup-history h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.winners-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.winner-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--light-bg);
+    border-radius: 5px;
+}
+
+.winner-item .year {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.winner-item .country {
+    font-size: 1.1rem;
+}
+
+.winner-item .location {
+    color: var(--text-secondary);
+}
+
+/* Responsive World Cup */
+@media (max-width: 768px) {
+    .worldcup-hero h1 {
+        font-size: 2rem;
+    }
+
+    .worldcup-teams {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .worldcup-team {
+        justify-content: center !important;
+    }
+
+    .knockout-teams {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .groups-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .match-venue-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .winner-item {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}
